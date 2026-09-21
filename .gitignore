@@ -1,0 +1,8 @@
+*.qmlc
+*.jsc
+.qmlls.ini
+*.qmlproject.user
+*.bak
+*.swp
+*~
+.DS_Store
