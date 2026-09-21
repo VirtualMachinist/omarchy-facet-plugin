@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "id": "virtualmachinist.facet",
+  "name": "Facet",
+  "version": "0.1.0",
+  "author": "VirtualMachinist",
+  "license": "MIT",
+  "description": "Bar status for the Facet CLI. Shows the latest recorded request and a short list of recent runs.",
+  "kinds": ["service", "bar-widget"],
+  "entryPoints": {
+    "service": "Service.qml",
+    "barWidget": "BarWidget.qml"
+  },
+  "barWidget": {
+    "displayName": "Facet",
+    "category": "Development",
+    "allowMultiple": false,
+    "defaultSection": "right",
+    "defaults": {
+      "refreshIntervalSec": 30,
+      "historyLimit": 8,
+      "collectionPath": ""
+    },
+    "schema": [
+      {
+        "key": "refreshIntervalSec",
+        "type": "integer",
+        "label": "Refresh interval (seconds)",
+        "min": 10,
+        "max": 600,
+        "step": 10,
+        "defaultValue": 30
+      },
+      {
+        "key": "historyLimit",
+        "type": "integer",
+        "label": "Recent runs",
+        "min": 1,
+        "max": 50,
+        "step": 1,
+        "defaultValue": 8
+      },
+      {
+        "key": "collectionPath",
+        "type": "string",
+        "label": "Collection path",
+        "defaultValue": ""
+      }
+    ]
+  }
+}
