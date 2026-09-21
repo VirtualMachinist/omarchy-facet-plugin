@@ -21,7 +21,7 @@ Item {
   property date lastUpdated: new Date(0)
 
   readonly property int refreshIntervalSec: Model.intSetting(settings, "refreshIntervalSec", 30, 10, 600)
-  readonly property int historyLimit: Model.intSetting(settings, "historyLimit", 8, 1, 50)
+  readonly property int historyLimit: Model.intSetting(settings, "historyLimit", Model.defaultHistoryLimit(), 1, 50)
   readonly property var resolvedPath: Model.collectionPath(settings)
 
   property int _generation: 0
@@ -133,7 +133,7 @@ Item {
   Process {
     id: historyProcess
     running: false
-    command: ["facet", "history", "--limit", "8", "--json"]
+    command: ["facet", "history", "--limit", "3", "--json"]
     stdout: StdioCollector {
       id: historyStdout
       waitForEnd: true

@@ -26,6 +26,10 @@ function collectionPath(settings) {
   return { ok: true, path: path }
 }
 
+function defaultHistoryLimit() {
+  return 3
+}
+
 function historyArgs(limit, path) {
   var args = ["facet", "history", "--limit", String(limit), "--json"]
   if (path) args.push(path)
@@ -79,11 +83,31 @@ function parseHistory(text) {
 function barLabel(probed, installed, ok, runs) {
   if (!probed) return "Facet"
   if (!installed) return "Facet missing"
-  if (!ok || !runs || runs.length === 0) return "Facet"
-  var run = runs[0]
-  var method = run.method ? run.method : "RUN"
-  var status = run.status === null || run.status === undefined ? "ERR" : String(run.status)
-  return method + " " + status
+  if (!ok) return "Offline"
+  var count = runs && runs.length ? runs.length : 0
+  if (count === 0) return "No runs"
+  if (count === 1) return "1 run"
+  return count + " runs"
+}
+
+// Panel sentence above the run list. The settings nudge appears only when
+// the poll succeeded, the list is empty, and Collection path is still blank.
+function panelHeadline(probed, installed, ok, runCount, pathResult, collectionLabel) {
+  if (!probed) return "Checking for facet…"
+  if (!installed)
+    return "Facet missing. Install the facet binary and put it on the Omarchy session PATH."
+  if (!ok) {
+    if (pathResult && pathResult.ok === false)
+      return "Collection path was rejected. Use a directory inside your API collection."
+    return "Offline. The last poll did not return runs."
+  }
+  if (collectionLabel) return collectionLabel
+  if (!runCount) {
+    if (!pathResult || !pathResult.path)
+      return "No runs. Set Collection path in this widget's settings to a directory inside your API collection."
+    return "No runs in that collection."
+  }
+  return ""
 }
 
 function statusText(run) {
@@ -98,13 +122,4 @@ function collectionName(workspace) {
   var trimmed = path.replace(/\/+$/, "")
   var slash = trimmed.lastIndexOf("/")
   return slash >= 0 ? trimmed.substring(slash + 1) : trimmed
-}
-
-function errorText(code) {
-  if (code === "empty") return "Facet returned nothing"
-  if (code === "not_json" || code === "not_object" || code === "schema" || code === "no_runs")
-    return "Facet JSON was not a history document"
-  if (code === "invalid_collection_path") return "Collection path was rejected"
-  if (!code) return ""
-  return String(code)
 }

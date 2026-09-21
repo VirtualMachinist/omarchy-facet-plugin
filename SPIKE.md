@@ -18,7 +18,7 @@ command -v facet
 facet history --limit <n> --json [<collection-path>]
 ```
 
-`<n>` comes from the widget setting `historyLimit` (default 8, clamped 1–50). `<collection-path>` is omitted when the setting is empty. A path that starts with `-` or contains a newline is not passed.
+`<n>` comes from the widget setting `historyLimit` (default 3, clamped 1–50). The panel shows that many rows. `<collection-path>` is omitted when the setting is empty. A path that starts with `-` or contains a newline is not passed.
 
 `Open Facet` is not a Facet status call:
 

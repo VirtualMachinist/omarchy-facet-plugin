@@ -55,11 +55,18 @@ Removing the plugin leaves the `facet` binary in place.
 
 ## Use
 
-The bar shows the method and HTTP status of the newest run (`GET 200`), **Facet** when there are no runs or the last poll failed, and **Facet missing** when the binary is not on `PATH`. A failed poll clears the list.
+The bar chip stays short:
 
-Click the bar item for the last few runs and **Open Facet**. That button runs `omarchy-launch-tui` on `facet tui`.
+- **Facet missing** when `facet` is not on `PATH`
+- **No runs** when the binary answered and the list is empty
+- **3 runs** (or **1 run**) for however many runs came back
+- **Offline** when a poll fails
 
-Facet looks for a collection by walking up from its working directory. The shell's directory is usually not a collection, so set **Collection path** in the widget settings to any file or directory inside the collection. Leave it empty to use the process directory.
+A failed poll clears the list.
+
+Click the chip for those runs and **Open Facet**. That button runs `omarchy-launch-tui` on `facet tui`. The panel shows about three runs by default (`historyLimit` is 3). Raise **Recent runs** in the widget settings if you want a longer list.
+
+If the chip says **No runs**, the shell's working directory is usually outside your API collection. One settings step: open the widget settings and set **Collection path** to any file or directory inside that collection. Leave the field empty only when Facet should search from the shell's own directory. A path that starts with `-` or contains a newline is ignored.
 
 The plugin runs only:
 
@@ -80,7 +87,7 @@ omarchy plugin validate .
 qmllint -I "$OMARCHY_PATH/shell" Service.qml BarWidget.qml Panel.qml
 ```
 
-`omarchy plugin validate` checks the manifest. `qmllint` checks the QML against the installed shell imports. Both need an Omarchy machine. Parser checks in this repo do not:
+`omarchy plugin validate` checks the manifest. `qmllint` checks the QML against the installed shell imports. Both run on Omarchy Linux. Together they are the check for v0.1.1 and for marking the pull request ready. Parser checks in this repo do not replace them:
 
 ```sh
 node tests/model.test.mjs

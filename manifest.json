@@ -5,7 +5,7 @@
   "version": "0.1.0",
   "author": "VirtualMachinist",
   "license": "MIT",
-  "description": "Bar status for the Facet CLI. Shows the latest recorded request and a short list of recent runs.",
+    "description": "Bar status for the Facet CLI. Shows whether Facet is available and how many recent runs it has.",
   "kinds": ["service", "bar-widget"],
   "entryPoints": {
     "service": "Service.qml",
@@ -18,7 +18,7 @@
     "defaultSection": "right",
     "defaults": {
       "refreshIntervalSec": 30,
-      "historyLimit": 8,
+      "historyLimit": 3,
       "collectionPath": ""
     },
     "schema": [
@@ -38,7 +38,7 @@
         "min": 1,
         "max": 50,
         "step": 1,
-        "defaultValue": 8
+        "defaultValue": 3
       },
       {
         "key": "collectionPath",

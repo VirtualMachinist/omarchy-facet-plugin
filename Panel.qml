@@ -19,10 +19,9 @@ Panel {
   readonly property string tooltip: {
     if (!service || !service.probed) return "Facet"
     if (!service.installed) return "Install the facet binary and put it on PATH"
-    if (!service.ok) return Model.errorText(service.lastError)
+    if (!service.ok) return "Offline"
     if (!service.runs || service.runs.length === 0) return "No runs"
-    var run = service.runs[0]
-    return run.requestPath ? run.requestPath : label
+    return label
   }
   readonly property string collectionLabel: service
     ? Model.collectionName(service.workspace)
@@ -90,14 +89,10 @@ Panel {
           width: parent.width
           wrapMode: Text.WordWrap
           text: {
-            if (!root.service || !root.service.probed) return "Checking for facet…"
-            if (!root.service.installed)
-              return "Facet missing. Install the facet binary and put it on the Omarchy session PATH."
-            if (!root.service.ok) return Model.errorText(root.service.lastError)
-            if (root.collectionLabel !== "") return root.collectionLabel
-            if (!root.service.runs || root.service.runs.length === 0)
-              return "No collection. Set Collection path to a directory inside your API collection."
-            return ""
+            var svc = root.service
+            if (!svc) return Model.panelHeadline(false, false, false, 0, null, "")
+            var count = svc.runs ? svc.runs.length : 0
+            return Model.panelHeadline(svc.probed, svc.installed, svc.ok, count, svc.resolvedPath, root.collectionLabel)
           }
           visible: text !== ""
           color: root.barForeground
