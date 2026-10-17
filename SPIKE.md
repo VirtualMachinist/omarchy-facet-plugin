@@ -1,13 +1,17 @@
 # SPIKE — Facet CLI contract for the Omarchy plugin
 
-Checked against the public Facet tree on 2026-09-21:
+Checked against Hedronite/facet at tag v0.6.0 (release <https://github.com/Hedronite/facet/releases/tag/v0.6.0>):
 
-- [docs/FACET.md](https://github.com/VirtualMachinist/facet/blob/main/docs/FACET.md) command list and `history` JSON
-- [docs/install.md](https://github.com/VirtualMachinist/facet/blob/main/docs/install.md)
+- [docs/FACET.md](https://github.com/Hedronite/facet/blob/v0.6.0/docs/FACET.md) command list and `history` JSON
+- [docs/install.md](https://github.com/Hedronite/facet/blob/v0.6.0/docs/install.md)
 - `crates/facet/src/lib.rs` help text and `--json` stripping
 - `crates/facet/src/history.rs` (`history` / `last`)
 
 This machine has no `facet` binary and no Omarchy shell, so nothing here was confirmed by executing `facet --help`.
+
+## Binary the plugin expects
+
+`facet` 0.6.0 from the release asset `facet-cli-0.6.0-linux-x64.tar.gz`, sha256 `8156b4d15b7e8dd8111573c7070754b56a14b5adc9a1a037dd4d13e2a33b1965`. The user installs it on the Omarchy session PATH before `omarchy plugin add`. The plugin does not install it. From that tarball, `facet --version` should print `facet 0.6.0 (probe 0.5.9)`; lathe-1 confirms it in G2.
 
 ## What the plugin calls
 
@@ -58,8 +62,8 @@ Fields read: `schemaVersion`, `workspace.path`, `runs[].id`, `method`, `status`,
 
 ## Still needs a binary to confirm
 
-1. `facet history --limit 8 --json` on a current release prints the document above, including `schemaVersion: 1`, and exits 0 for an empty store.
-2. The Omarchy session PATH can see `facet`. A Cargo install under `~/.cargo/bin` is invisible to Quickshell if that directory is not exported to the graphical session. The plugin then stays on **Facet missing**.
+1. `facet history --limit 8 --json` from the 0.6.0 tarball prints the document above, including `schemaVersion: 1`, and exits 0 for an empty store.
+2. The Omarchy session PATH can see `facet`. A `facet` extracted into a directory that only an interactive login shell exports is invisible to Quickshell. The plugin then stays on **Facet missing**.
 3. `omarchy-launch-tui --app-id=virtualmachinist.facet facet tui` opens the TUI. `facet tui [<path>]` is in the public help; the launcher invocation was taken from `bin/omarchy-launch-tui` (`xdg-terminal-exec --app-id=… -e facet tui`).
 4. The bar widget reaches the poller with `bar.shell.serviceFor("virtualmachinist.facet")`. That is how other third-party service + bar-widget plugins do it. The shell injects `service` into panel-kind plugins, and this plugin deliberately does not declare a panel kind. A replacement bar that withholds `serviceFor` will leave the widget on "Facet" with no runs.
 
@@ -69,6 +73,6 @@ Fields read: `schemaVersion`, `workspace.path`, `runs[].id`, `method`, `status`,
 
 `facet doctor --json` exists and was not used. It reports store paths and secret-backend names, and its exit code is 0, 1, or 9. It is not a run list.
 
-The public `flake.nix` exposes a dev shell only. crates.io `facet-lattice` is the library, not the `facet` binary.
+crates.io `facet-lattice` 0.5.9 is the library, not the `facet` binary.
 
 Not invoked, on purpose: `facet mcp`, `facet env`, `facet blob`, `facet history --sql`, `facet history --bodies`.

@@ -1,6 +1,6 @@
 # Facet for Omarchy
 
-A bar plugin for [Omarchy](https://omarchy.org) that shows the latest request recorded by [Facet](https://github.com/VirtualMachinist/facet). Click the bar item for recent runs, or open the Facet terminal UI.
+A bar plugin for [Omarchy](https://omarchy.org) that shows the latest request recorded by [Facet](https://github.com/Hedronite/facet). Click the bar item for recent runs, or open the Facet terminal UI.
 
 The plugin shells `facet history --json` and renders that document. Facet's files stay on disk.
 
@@ -8,30 +8,27 @@ Linux Omarchy only, not Darwin.
 
 ## Install the Facet binary first
 
-Install the `facet` binary yourself, on the PATH of the Omarchy graphical session (the session that starts Quickshell), then check:
+This plugin does not install the `facet` binary. Install Facet 0.6.0 yourself before `omarchy plugin add`.
+
+1. Download `facet-cli-0.6.0-linux-x64.tar.gz` from the release <https://github.com/Hedronite/facet/releases/tag/v0.6.0>.
+2. Check its sha256 is `8156b4d15b7e8dd8111573c7070754b56a14b5adc9a1a037dd4d13e2a33b1965`:
+
+   ```sh
+   echo "8156b4d15b7e8dd8111573c7070754b56a14b5adc9a1a037dd4d13e2a33b1965  facet-cli-0.6.0-linux-x64.tar.gz" | sha256sum -c -
+   ```
+
+3. Extract `facet` and put it on the PATH of the Omarchy graphical session (the session that starts Quickshell), for example `~/.local/bin`. A directory exported only by an interactive login shell is not enough.
+
+Then check, from that session:
 
 ```sh
 facet --version
 facet history --limit 1 --json
 ```
 
-If `command -v facet` fails in that session, the bar shows **Facet missing**.
+`facet --version` prints `facet 0.6.0 (probe 0.5.9)`. If `command -v facet` fails in that session, the bar shows **Facet missing**.
 
-Install the binary, not the library:
-
-- **Cargo.** The CLI is not `cargo install facet`.
-
-  ```sh
-  cargo install --git https://github.com/VirtualMachinist/facet --package facet-cli --bin facet
-  ```
-
-  A release archive from that repository is the shorter path. Extract `facet` onto `PATH` (for example `~/.local/bin`).
-
-- **Nix.** The public Facet flake is a development shell, not an installable package. Build the `facet` binary from that repository and put it on `PATH`.
-
-- **crates.io.** [`facet-lattice`](https://crates.io/crates/facet-lattice) is the run-history library. The `facet` executable comes from the Facet repository above. `cargo add facet-lattice` leaves this plugin without a binary.
-
-`cargo install` lands in `~/.cargo/bin`. That directory has to be on the graphical session PATH, not only in an interactive login shell.
+crates.io [`facet-lattice`](https://crates.io/crates/facet-lattice) is the run-history library, not the `facet` executable. `cargo add facet-lattice` leaves this plugin without a binary.
 
 ## Install the plugin
 
@@ -87,7 +84,7 @@ omarchy plugin validate .
 qmllint -I "$OMARCHY_PATH/shell" Service.qml BarWidget.qml Panel.qml
 ```
 
-`omarchy plugin validate` checks the manifest. `qmllint` checks the QML against the installed shell imports. Both run on Omarchy Linux. Together they are the check for v0.1.1 and for marking the pull request ready. Parser checks in this repo do not replace them:
+`omarchy plugin validate` checks the manifest. `qmllint` checks the QML against the installed shell imports. Both run on Omarchy Linux. Together they are the check for plugin version 0.1.0 and for marking the pull request ready. Parser checks in this repo do not replace them:
 
 ```sh
 node tests/model.test.mjs
