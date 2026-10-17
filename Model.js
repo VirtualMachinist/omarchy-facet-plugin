@@ -95,7 +95,7 @@ function barLabel(probed, installed, ok, runs) {
 function panelHeadline(probed, installed, ok, runCount, pathResult, collectionLabel) {
   if (!probed) return "Checking for facet…"
   if (!installed)
-    return "Facet missing. Install the facet binary and put it on the Omarchy session PATH."
+    return "Facet missing. Install facet-cli-0.6.0-linux-x64.tar.gz from https://github.com/Hedronite/facet/releases/tag/v0.6.0 and put facet on the Omarchy session PATH."
   if (!ok) {
     if (pathResult && pathResult.ok === false)
       return "Collection path was rejected. Use a directory inside your API collection."
